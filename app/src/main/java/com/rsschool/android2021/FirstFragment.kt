@@ -34,8 +34,6 @@ class FirstFragment : Fragment() {
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
 
-        // TODO: val min = ...
-        // TODO: val max = ...
         min = view.findViewById(R.id.min_value)
         max = view.findViewById(R.id.max_value)
 
