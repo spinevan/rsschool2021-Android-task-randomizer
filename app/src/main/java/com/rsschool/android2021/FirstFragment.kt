@@ -5,13 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 class FirstFragment : Fragment() {
 
     private var generateButton: Button? = null
     private var previousResult: TextView? = null
+    private var listener: ActionOpenSecondFragmentListener? = null
+    private var min: EditText? = null
+    private var max: EditText? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,9 +36,19 @@ class FirstFragment : Fragment() {
 
         // TODO: val min = ...
         // TODO: val max = ...
+        min = view.findViewById(R.id.min_value)
+        max = view.findViewById(R.id.max_value)
+
+        listener = context as ActionOpenSecondFragmentListener
 
         generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
+
+            if (checkInput(min?.text.toString(), max?.text.toString())) {
+                listener?.openSecondFragment( min?.text.toString().toInt(), max?.text.toString().toInt())
+            } else {
+                Toast.makeText(context, "Check input values!", Toast.LENGTH_LONG).show()
+           }
+
         }
     }
 
@@ -49,5 +64,18 @@ class FirstFragment : Fragment() {
         }
 
         private const val PREVIOUS_RESULT_KEY = "PREVIOUS_RESULT"
+    }
+
+     private fun checkInput(min: String, max: String):Boolean {
+
+       if ( min == "" || max == "") return false
+       if (min.toInt() == 0 || max.toInt() == 0) return false
+       if (min.toInt() > max.toInt()) return false
+
+       return true
+    }
+
+    interface ActionOpenSecondFragmentListener {
+        fun openSecondFragment(min: Int, max: Int)
     }
 }
